@@ -1,0 +1,10 @@
+fastapi==0.99.0
+uvicorn[standard]
+python-dotenv
+pyjwt[crypto]
+python-multipart
+yarl
+psycopg[binary, pool]
+email-validator
+bcrypt
+tortoise-orm[asyncpg]

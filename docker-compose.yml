@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: authuser
+      POSTGRES_PASSWORD: authpwd
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+    volumes:
+      - /var/run/postgresql:/var/run/postgresql
+    
+  postgres-client:
+    image: postgres:latest
+    depends_on:
+      - postgres
+    command: ["psql", "-h", "postgres", "-U", "authuser", "-d", "authdb", "-W"]
+    networks:
+      - mynetwork
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgres://authuser:authpwd@postgres:5432/authdb
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
