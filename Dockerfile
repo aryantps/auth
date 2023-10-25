@@ -8,6 +8,9 @@ ENV PYTHONUNBUFFERED 1
 # Create and set the working directory
 WORKDIR $APP_HOME
 
+# If .env file exists, if not, create it from .env.example
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
+
 # Copy the requirements file into the container
 COPY requirements.txt .
 
