@@ -33,6 +33,19 @@ class Settings(BaseSettings):
     DB_BASE: str = "auth"
     DB_ECHO: bool = False
 
+    # Load private key and public key from files
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.load_keys_from_files()
+
+    def load_keys_from_files(self):
+        # Load the contents of private key from private_key.pem
+        with open('private_key.pem', 'r') as private_key_file:
+            self.TOKEN_PRIVATE_KEY = private_key_file.read()
+
+        # Load the contents of public key from public_key.pem
+        with open('public_key.pem', 'r') as public_key_file:
+            self.TOKEN_PUBLIC_KEY = public_key_file.read()
     # @property
     # def get_db_url(self) -> URL:
     #     """
