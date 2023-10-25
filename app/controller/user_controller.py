@@ -10,7 +10,7 @@ from app.services.user_service import UserService
 user_router = APIRouter()
 
 
-@user_router.get("/me/{test}")
+@user_router.get("/me")
 async def get_current_user(req: CurrentUserRequest = Depends(), db_pool: AsyncConnectionPool = Depends(get_db_pool)):
     service = UserService(db_pool)
     response = await service.get_current_user(req)

@@ -10,7 +10,6 @@ from app.services.password_service import PasswordService
 class CurrentUserRequest:
     def __init__(self,
                  req: Request,
-                 test : str = Path(...),
                  token: Optional[str] = Depends(OAuth2PasswordBearer(tokenUrl="token"))
                  ):
         self.token = token
