@@ -10,7 +10,7 @@ class TokenRequest:
         self.password = form_data.password
         self.issued_time = datetime.now(timezone.utc)
 
-        self.expiration_time = datetime.now(timezone.utc)
+        self.expiration_time = datetime.now(timezone.utc) + timedelta(hours=3)
         # utc_now = datetime.utcnow()
         # timezone = pytz.timezone("Asia/Calcutta")
         # self.issued_time = utc_now.replace(tzinfo=pytz.utc).astimezone(timezone)
