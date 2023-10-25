@@ -12,15 +12,9 @@ services:
     networks:
       - mynetwork
     volumes:
-      - /var/run/postgresql:/var/run/postgresql
-    
-  postgres-client:
-    image: postgres:latest
-    depends_on:
-      - postgres
-    command: ["psql", "-h", "postgres", "-U", "authuser", "-d", "authdb", "-W"]
-    networks:
-      - mynetwork
+      - ./postgresql:/var/run/postgresql
+      # - /var/run/postgresql:/var/run/postgresql
+
 
   fastapi:
     build:
@@ -31,7 +25,7 @@ services:
     depends_on:
       - postgres
     environment:
-      - DATABASE_URL=postgres://authuser:authpwd@postgres:5432/authdb
+      - DATABASE_URL=asyncpg://authuser:authpwd@postgres:5432/authdb
     networks:
       - mynetwork
 
