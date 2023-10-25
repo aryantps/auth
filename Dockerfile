@@ -11,8 +11,14 @@ WORKDIR $APP_HOME
 # Copy the requirements file into the container
 COPY requirements.txt .
 
+RUN pip install asyncpg 
+
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Generate private_key.pem and public_key.pem
+RUN openssl genpkey -algorithm RSA -out private_key.pem
+RUN openssl rsa -pubout -in private_key.pem -out public_key.pem
 
 # Copy the entire project directory into the container
 COPY . .

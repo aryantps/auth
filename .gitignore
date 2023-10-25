@@ -1,0 +1,23 @@
+# Ignore build artifacts and dependencies
+*.pyc
+*.pyo
+*.db
+*.db-journal
+*.lock
+__pycache__/
+*.egg-info/
+dist/
+build/
+
+# Ignore editor-specific files
+.vscode/
+.idea/
+
+# Ignore Python bytecode files
+__pycache__/
+
+# Ignore the virtual environment directory
+venv/
+
+
+.env

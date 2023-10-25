@@ -19,7 +19,7 @@ class TokenService:
         await session_dao.insert_dict({
             "token": token,
             "created_at": datetime.utcnow(),
-            "expiring_at": datetime.unow(),
+            "expiring_at": datetime.now(),
             "user_id": user_id
         })
         return token

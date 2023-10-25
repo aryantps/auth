@@ -33,10 +33,9 @@ class UserService:
         return user_details
 
     async def create_user(self, req):
-        hashed_password = PasswordService.get_hashed_password(req.password)
         user_details = await self.user_dao.insert_dict({
             "username": req.username,
-            "password": hashed_password,
+            "password": req.password,
             "email": req.email,
             "name": req.name,
             "phone_number": req.phone_number

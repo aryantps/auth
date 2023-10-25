@@ -38,4 +38,8 @@ async def get_db_pool(request: Request) -> AsyncConnectionPool:
     :param request: current request.
     :returns: database connections pool.
     """
+    if not hasattr(request.app.state, "db_pool") or request.app.state.db_pool is None:
+        logger.error("DB connection pool is not set up!")
+        return None
+
     return request.app.state.db_pool
