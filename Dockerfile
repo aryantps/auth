@@ -8,9 +8,6 @@ ENV PYTHONUNBUFFERED 1
 # Create and set the working directory
 WORKDIR $APP_HOME
 
-# If .env file exists, if not, create it from .env.example
-RUN if [ ! -f .env ]; then cp .env.example .env; fi
-
 # Copy the requirements file into the container
 COPY requirements.txt .
 
@@ -25,6 +22,9 @@ RUN openssl rsa -pubout -in private_key.pem -out public_key.pem
 
 # Copy the entire project directory into the container
 COPY . .
+
+# If .env file exists, if not, create it from .env.example
+RUN test -e .env || cp .env.example .env
 
 # Expose the port your FastAPI application will run on
 EXPOSE 8000
