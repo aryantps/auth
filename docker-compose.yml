@@ -13,10 +13,9 @@ services:
       - mynetwork
     volumes:
       - ./postgresql:/var/run/postgresql
-      # - /var/run/postgresql:/var/run/postgresql
-
 
   fastapi:
+    restart: on-failure:1
     build:
       context: .
       dockerfile: Dockerfile
@@ -26,6 +25,18 @@ services:
       - postgres
     environment:
       - DATABASE_URL=asyncpg://authuser:authpwd@postgres:5432/authdb
+    networks:
+      - mynetwork
+
+  db_management_tool:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@mail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
     networks:
       - mynetwork
 
