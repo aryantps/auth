@@ -6,7 +6,7 @@ MODELS_MODULES: List[str] = ["app.db.models"]  # noqa: WPS407
 
 TORTOISE_CONFIG = {
     "connections": {
-        "default": "asyncpg://authuser:authpwd@postgres:5432/authdb",
+        "default": settings.get_asyncpg_conn_string,
     },
     "apps": {
         "models": {
