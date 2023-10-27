@@ -23,8 +23,6 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
-    environment:
-      - DATABASE_URL=asyncpg://authuser:authpwd@postgres:5432/authdb
     networks:
       - mynetwork
 

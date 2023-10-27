@@ -2,6 +2,7 @@ from fastapi import FastAPI, APIRouter
 
 from app.controller.token_controller import token_router
 from app.controller.user_controller import user_router
+from app.db.dbmate import turn_dbmate_down, turn_dbmate_up
 from app.db.tortoise_config import TORTOISE_CONFIG
 
 from app.resources.middleware import add_process_time_header, verify_token
@@ -35,9 +36,11 @@ async def startup():
     await Tortoise.init(config=TORTOISE_CONFIG)
     await Tortoise.generate_schemas()
     register_tortoise(app, config=TORTOISE_CONFIG)
+    turn_dbmate_up()
 
 @app.on_event("shutdown")
 async def shutdown():
+    turn_dbmate_down()
     await Tortoise.close_connections()
 
 #

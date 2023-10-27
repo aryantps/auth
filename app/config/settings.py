@@ -22,16 +22,15 @@ class Settings(BaseSettings):
     RELOAD: bool = False
     LOG_LVL: LogLevel = LogLevel.INFO
 
-    TOKEN_PRIVATE_KEY : str
-    TOKEN_PUBLIC_KEY: str
+    TOKEN_PRIVATE_KEY: str  
+    TOKEN_PUBLIC_KEY: str  
 
     # Variables for the database
-    DB_HOST: str = "localhost"
-    DB_PORT: int = 5432
-    DB_USER: str = "aryant"
-    DB_PASS: str = "aryant"
-    DB_BASE: str = "auth"
-    DB_ECHO: bool = False
+    DB_HOST: str
+    DB_PORT: int
+    DB_USER: str
+    DB_PASS: str
+    DB_NAME: str
 
     # Load private key and public key from files
     def __init__(self, *args, **kwargs):
@@ -46,21 +45,7 @@ class Settings(BaseSettings):
         # Load the contents of public key from public_key.pem
         with open('public_key.pem', 'r') as public_key_file:
             self.TOKEN_PUBLIC_KEY = public_key_file.read()
-    # @property
-    # def get_db_url(self) -> URL:
-    #     """
-    #     get db URL.
-    #
-    #     :return: database URL.
-    #     """
-    #     return URL.build(
-    #         scheme="postgresql",
-    #         host=self.DB_HOST,
-    #         port=self.DB_PORT,
-    #         user=self.DB_USER,
-    #         password=self.DB_PASS,
-    #         path=f"/{self.DB_BASE}",
-    #         )
+
     @property
     def get_db_url(self) -> URL:
         """
@@ -74,8 +59,22 @@ class Settings(BaseSettings):
             port=self.DB_PORT,
             user=self.DB_USER,
             password=self.DB_PASS,
-            path=f"/{self.DB_BASE}",
+            path=f"/{self.DB_NAME}",
         )
+
+    @property
+    def get_postgres_conn_string(self):
+        """
+        Get the database URL with SSL mode disabled.
+        """
+        return f"postgres://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?sslmode=disable"
+
+    @property
+    def get_asyncpg_conn_string(self):
+        """
+        Get the asyncpg URL.
+        """
+        return f"asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
 
 settings = Settings()
