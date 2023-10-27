@@ -26,11 +26,11 @@ class Settings(BaseSettings):
     TOKEN_PUBLIC_KEY: str  
 
     # Variables for the database
-    DB_HOST: str
-    DB_PORT: int
-    DB_USER: str
-    DB_PASS: str
-    DB_NAME: str
+    POSTGRES_HOST: str
+    POSTGRES_PORT: int
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_DB: str
 
     # Load private key and public key from files
     def __init__(self, *args, **kwargs):
@@ -55,11 +55,11 @@ class Settings(BaseSettings):
         """
         return URL.build(
             scheme="postgres",
-            host=self.DB_HOST,
-            port=self.DB_PORT,
-            user=self.DB_USER,
-            password=self.DB_PASS,
-            path=f"/{self.DB_NAME}",
+            host=self.POSTGRES_HOST,
+            port=self.POSTGRES_PORT,
+            user=self.POSTGRES_USER,
+            password=self.POSTGRES_PASSWORD,
+            path=f"/{self.POSTGRES_DB}",
         )
 
     @property
@@ -67,14 +67,14 @@ class Settings(BaseSettings):
         """
         Get the database URL with SSL mode disabled.
         """
-        return f"postgres://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?sslmode=disable"
+        return f"postgres://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}?sslmode=disable"
 
     @property
     def get_asyncpg_conn_string(self):
         """
         Get the asyncpg URL.
         """
-        return f"asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return f"asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
 
 settings = Settings()
